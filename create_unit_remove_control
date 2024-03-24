@@ -1,0 +1,27 @@
+_unit = group player createUnit ["C_Marshal_F", getPos player, [], 0, "FORM"];
+_unit setCombatMode "RED";
+_unit allowFleeing 0;
+_unit setVariable ["ExileMoney", 0, true];
+_statue = nearestObject [player, "Land_AncientStatue_01_F"];
+
+
+_unit addEventHandler ["killed", {
+    player remoteControl objNull;
+	_unit remoteControl driver UAV;
+}];
+
+
+deleteVehicle _statue;
+_actionID = _unit addAction ["Взять управление", {
+	params ["_target", "_caller"];
+	if (!isNull _target && (typeName _target isEqualTo "OBJECT")) then {
+		if ((typeOf _target) in ["C_Marshal_F", "ваш_тип_бота_2", "ваш_тип_бота_3"]) then {
+			 player remoteControl _target;
+			_target switchCamera "internal";
+			["SuccessTitleAndText", [ "Теперь вы управляете ботом!"]] call ExileClient_gui_toaster_addTemplateToast;		
+		};
+	} else {
+		["SuccessTitleAndText", [ "Ничего не выбрано или выбранный объект не существует!"]] call ExileClient_gui_toaster_addTemplateToast;
+	};
+
+}, [], 0, true, true, "", "alive _this", -1, false, "", ""];
