@@ -1,0 +1,31 @@
+private ["_rubberDuckFound","_item"];
+_rubberDuckFound = false; 
+_item="Exile_Item_RubberDuck";
+if (_item in (uniformItems player)) then {
+    _rubberDuckFound = true;
+    player removeItem _item;
+};
+
+
+if ( _rubberDuckFound == false && _item in (vestItems player)) then {
+    _rubberDuckFound = true;
+    player removeItemFromVest _item;
+};
+
+if ( _rubberDuckFound == false && _item in (backpackItems player)) then {
+    _rubberDuckFound = true;
+    player removeItemFromBackpack _item;
+};
+
+
+if (_rubberDuckFound) then {
+	["SuccessTitleAndText", [ "Уточка уничтожена, теперь ты супер солдат!"]] call ExileClient_gui_toaster_addTemplateToast;
+	["SuccessTitleAndText", [ "Уточка уничтожена, теперь ты супер солдат!"]] call ExileClient_gui_toaster_addTemplateToast;
+	["SuccessTitleAndText", [ "Беги быстрее, целься лучше, руки не дрожат!Только не умирай!!!"]] call ExileClient_gui_toaster_addTemplateToast;
+	player setAnimSpeedCoef 1.5;
+	player setStamina 402;
+	player setCustomAimCoef 0.01;
+} else {
+	["SuccessTitleAndText", [ "Уточки не нашлось в инвенторе!"]] call ExileClient_gui_toaster_addTemplateToast;
+    hint "Уточки не нашлось в инвенторе!";
+};
